@@ -19,7 +19,7 @@ const signInSchema = z.object({
 
 type SignInForm = z.infer<typeof signInSchema>
 
-export function SignIpTab() {
+export function SignIpTab({openEmailVerificationTab}: {openEmailVerificationTab: (email: string) => void}) {
 
     const router = useRouter();
 
@@ -36,7 +36,10 @@ export function SignIpTab() {
     const handleSignIn = async (data: SignInForm) => {
         await authClient.signIn.email({...data, callbackURL: "/"}, {
             onError: (error) => {
-                toast.error(error.error.message || "Failed to Sig up")
+                if(error.error.code === "EMAIL_NOT_VERIFIED"){
+                    openEmailVerificationTab(data.email);
+                }
+                toast.error(error.error.message || "Failed to Sign in")
             },
             onSuccess: () => {
                 router.push("/");

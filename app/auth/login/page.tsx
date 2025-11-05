@@ -14,8 +14,8 @@ import { EmailVerification } from "./_components/email-verification";
 type SelectedTab = "signin" | "signup" | "email-verification";
 
 export default function LoginPage() {
-    const [email, setEmail] = useState<string>("rahul.mymail1@gmail.com");
-    const [selectedTab, setSelectedTab] = useState<SelectedTab>("email-verification");
+    const [email, setEmail] = useState<string>("");
+    const [selectedTab, setSelectedTab] = useState<SelectedTab>("signin");
 
     const router = useRouter();
     useEffect(()=> {
@@ -26,19 +26,26 @@ export default function LoginPage() {
         })
     }, [router])
 
+    function openEmailVerificationTab(email: string) {
+        setEmail(email);
+        setSelectedTab("email-verification");
+    }
+
     return (
         <Tabs value={selectedTab} onValueChange={ t => setSelectedTab(t as SelectedTab)} className="mx-auto w-full my-6 px-4">
+            {(selectedTab === "signin" || selectedTab === "signup") && (
             <TabsList>
                 <TabsTrigger value="signin">Sign In</TabsTrigger>
                 <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
+            )}
             <TabsContent value="signin">
                 <Card>
                     <CardHeader className="text-2xl font-bold">
                         <CardTitle>Sign In</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <SignIpTab />
+                        <SignIpTab openEmailVerificationTab={openEmailVerificationTab} />
                     </CardContent>
 
                     <Separator />
@@ -55,7 +62,7 @@ export default function LoginPage() {
                         <CardTitle>Sign Up</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <SignUpTab />
+                        <SignUpTab openEmailVerificationTab={openEmailVerificationTab} />
                     </CardContent>
 
                     <Separator />
