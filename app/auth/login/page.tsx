@@ -1,7 +1,9 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SignUpTab } from "./_components/signup-tab";
 import { SignIpTab } from "./_components/signin-tab";
+import { Separator } from "@/components/ui/separator";
+import { SocialAuthButtons } from "./_components/social-auth-button";
 
 export default function LoginPage() {
     return (
@@ -13,22 +15,34 @@ export default function LoginPage() {
             <TabsContent value="signin">
                 <Card>
                     <CardHeader className="text-2xl font-bold">
-                        <CardHeader>Sign In</CardHeader>
-                        <CardContent>
-                            <SignIpTab />
-                        </CardContent>
+                        <CardTitle>Sign In</CardTitle>
                     </CardHeader>
+                    <CardContent>
+                        <SignIpTab />
+                    </CardContent>
+
+                    <Separator />
+
+                    <CardFooter className="grid grid-cols-2 gap-3">
+                        <SocialAuthButtons />
+                    </CardFooter>
                 </Card>
             </TabsContent>
 
             <TabsContent value="signup">
                 <Card>
                     <CardHeader className="text-2xl font-bold">
-                        <CardHeader>Sign Up</CardHeader>
-                        <CardContent>
-                            <SignUpTab />
-                        </CardContent>
+                        <CardTitle>Sign Up</CardTitle>
                     </CardHeader>
+                    <CardContent>
+                        <SignUpTab />
+                    </CardContent>
+
+                    <Separator />
+
+                    <CardFooter className="grid grid-cols-2 gap-3">
+                        <SocialAuthButtons />
+                    </CardFooter>
                 </Card>
             </TabsContent>
         </Tabs>
