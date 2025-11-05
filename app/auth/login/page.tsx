@@ -6,11 +6,17 @@ import { SignUpTab } from "./_components/signup-tab";
 import { SignIpTab } from "./_components/signin-tab";
 import { Separator } from "@/components/ui/separator";
 import { SocialAuthButtons } from "./_components/social-auth-button";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { EmailVerification } from "./_components/email-verification";
+
+type SelectedTab = "signin" | "signup" | "email-verification";
 
 export default function LoginPage() {
+    const [email, setEmail] = useState<string>("rahul.mymail1@gmail.com");
+    const [selectedTab, setSelectedTab] = useState<SelectedTab>("email-verification");
+
     const router = useRouter();
     useEffect(()=> {
         authClient.getSession().then((session) => {
@@ -21,7 +27,7 @@ export default function LoginPage() {
     }, [router])
 
     return (
-        <Tabs defaultValue="signin" className="mx-auto w-full my-6 px-4">
+        <Tabs value={selectedTab} onValueChange={ t => setSelectedTab(t as SelectedTab)} className="mx-auto w-full my-6 px-4">
             <TabsList>
                 <TabsTrigger value="signin">Sign In</TabsTrigger>
                 <TabsTrigger value="signup">Sign Up</TabsTrigger>
@@ -57,6 +63,17 @@ export default function LoginPage() {
                     <CardFooter className="grid grid-cols-2 gap-3">
                         <SocialAuthButtons />
                     </CardFooter>
+                </Card>
+            </TabsContent>
+
+            <TabsContent value="email-verification">
+                <Card>
+                    <CardHeader className="text-2xl font-bold">
+                        <CardTitle>Verify Your Email</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <EmailVerification email={email} />
+                    </CardContent>
                 </Card>
             </TabsContent>
         </Tabs>
